@@ -156,6 +156,14 @@ function nvd3Vis(slice, payload) {
       svg = d3.select(slice.selector).append('svg');
     }
     switch (vizType) {
+      case 'line_xy':
+        fd.rich_tooltip = false;
+        chart = nv.models.lineChart();
+        chart.xScale(d3.scale.linear());
+        chart.interpolate(fd.line_interpolation);
+        chart.xAxis.staggerLabels(false);
+        break;
+
       case 'line':
         if (fd.show_brush) {
           chart = nv.models.lineWithFocusChart();
@@ -459,6 +467,11 @@ function nvd3Vis(slice, payload) {
       svg.selectAll('.nv-point')
       .style('stroke-opacity', 1)
       .style('fill-opacity', 1);
+    }
+
+    if (!fd.show_lines) {
+      svg.selectAll('.nv-line')
+      .style('stroke-width', 0);
     }
 
     if (chart.yAxis !== undefined || chart.yAxis2 !== undefined) {
